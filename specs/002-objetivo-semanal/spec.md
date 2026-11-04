@@ -22,17 +22,20 @@ Decisiones ya tomadas para esta versión:
 - Se muestra en un **bloque propio**, situado **justo debajo de las tarjetas de resumen**
   y **antes del mapa de calor**, que pasa a ir después.
 - El progreso se expresa con **texto ("X de Y min"), porcentaje y barra de progreso**.
-- La referencia temporal es la **semana actual, de lunes a domingo en fecha local**, y el
-  progreso se calcula **del lunes a hoy**, igual que la tarjeta "Minutos semana".
-- **Sin historial de semanas**: cada lunes el progreso vuelve a cero y no se conserva el
-  resultado de semanas anteriores.
+- La referencia temporal es la **semana actual, de lunes a domingo en fecha local**, la que
+  contiene la **fecha de referencia del último cálculo (R)**: la fecha local de hoy en el
+  momento del último recálculo. El progreso se calcula **del lunes de esa semana a R**,
+  igual que la tarjeta "Minutos semana".
+- **Sin historial de semanas**: al recalcular en una semana nueva el progreso vuelve a cero
+  y no se guarda ni se puede consultar el resultado de semanas anteriores.
 - **Sin objetivo fijado** el bloque permanece visible con un botón para fijarlo.
 - Al **alcanzar o superar** el objetivo la barra se llena y aparece "¡Objetivo cumplido!".
 - Valores válidos: **minutos enteros de 1 a 10.080** (7 días × 24 horas). Un valor
   guardado inválido o ilegible se trata como "sin objetivo".
 - El progreso se recalcula **al cargar la aplicación y al actuar** (registrar una sesión o
   fijar, cambiar o quitar el objetivo); no hay temporizador ni cambio automático por el
-  paso de la medianoche o de la semana.
+  paso de la medianoche o de la semana. Mientras no ocurra uno de esos cálculos, el bloque
+  mantiene en pantalla la última semana calculada, igual que la tarjeta "Minutos semana".
 
 ## Usuarios
 
@@ -69,23 +72,34 @@ Decisiones ya tomadas para esta versión:
 - **Objetivo semanal**: número entero de minutos que la persona quiere estudiar en una
   semana. Es único, se reutiliza en todas las semanas y no está ligado a una semana
   concreta.
-- **Valor canónico del objetivo**: número entero entre 1 y 10.080, ambos incluidos, sin
-  signo, sin decimales, sin exponente y sin separadores. Es la única representación válida
-  que se considera objetivo guardado.
-- **Semana actual**: de lunes a domingo según la fecha local del dispositivo. El lunes es
-  el primer día y el domingo el último.
+- **Valor canónico del objetivo**: la forma normalizada con la que el sistema guarda y
+  muestra el objetivo: número entero entre 1 y 10.080, ambos incluidos, sin signo, sin
+  decimales, sin exponente y sin separadores. Al leer el valor guardado se aceptan tanto
+  ese número entero como un texto formado solo por dígitos (con espacios en los extremos
+  permitidos) que represente un entero del rango; ambos se normalizan al mismo entero
+  canónico, que es el que se usa para calcular y para mostrar.
+- **Fecha de referencia del último cálculo (R)**: fecha local del dispositivo en el
+  instante del último momento de cálculo definido en RF-9 (cargar la aplicación, registrar
+  una sesión o fijar, cambiar o quitar el objetivo). Es la única "fecha de hoy" que usa el
+  bloque: si la aplicación sigue abierta y cambia el día o la semana sin que ocurra otro
+  cálculo, R no cambia.
+- **Semana actual (semana mostrada)**: la semana de lunes a domingo, en fecha local, que
+  contiene R. Es la única semana que el bloque usa para calcular y mostrar el progreso. Si
+  la aplicación sigue abierta de domingo a lunes sin un nuevo cálculo, la semana actual
+  sigue siendo la de R hasta que se cargue de nuevo o se actúe, igual que la tarjeta
+  "Minutos semana"; eso no es historial: no se guarda ni se recupera tras recargar.
 - **Progreso de la semana (X)**: minutos acumulados de las sesiones con fecha entre el
-  lunes de la semana actual y hoy, ambos incluidos. Debe ser exactamente el mismo número
+  lunes de la semana actual y R, ambos incluidos. Debe ser exactamente el mismo número
   que muestra la tarjeta "Minutos semana" en ese momento.
 - **Sesión válida**: sesión aceptada por las validaciones vigentes del formulario de
   registro (fecha presente, tema no vacío y minutos enteros mayores que 0) y que cuenta
-  para la tarjeta "Minutos semana" (fecha entre el lunes de la semana actual y hoy).
+  para la tarjeta "Minutos semana" (fecha entre el lunes de la semana actual y R).
 - **Fecha no reconocible**: fecha que el cálculo de la tarjeta "Minutos semana" descarta
   por no poder interpretarla. El bloque del objetivo no aplica ninguna validación de fecha
   distinta de la de la tarjeta.
 - **Objetivo cumplido**: X es igual o mayor que el objetivo.
-- **Sin objetivo**: no hay ningún valor guardado, o el valor guardado no es canónico según
-  esta spec.
+- **Sin objetivo**: no hay ningún valor guardado, o el valor guardado no es un objetivo
+  válido según RF-11.
 - **Porcentaje mostrado (P)**: entero entre 0 y 100, resultado de redondear hacia abajo
   (X ÷ objetivo) × 100 y limitar el resultado a 100. Nunca supera 100 aunque X supere el
   objetivo.
@@ -165,10 +179,10 @@ Criterios de aceptación:
   "Minutos semana" en ese mismo momento: misma semana, mismo cálculo y mismo resultado.
 - La tarjeta y el bloque no deberán poder mostrar números distintos; si divergen, es un
   fallo de la funcionalidad. Ambos deberán actualizarse en el mismo instante y con la
-  misma fecha de hoy en cada momento de cálculo definido en RF-9.
+  misma fecha de referencia R en cada momento de cálculo definido en RF-9.
 - CUANDO existan varias sesiones con la misma fecha dentro de la semana actual, el sistema
   deberá sumar sus minutos al progreso.
-- El sistema deberá ignorar las sesiones con fecha posterior a hoy, incluidas las de esta
+- El sistema deberá ignorar las sesiones con fecha posterior a R, incluidas las de esta
   misma semana.
 - El sistema deberá ignorar las sesiones anteriores al lunes de la semana actual.
 - El sistema deberá ignorar las sesiones con minutos vacíos, no numéricos, cero o
@@ -243,16 +257,20 @@ Criterios de aceptación:
 - CUANDO comience una semana nueva (lunes en fecha local) y la persona cargue la
   aplicación, el sistema deberá mostrar el progreso de esa semana, que será 0 si aún no
   hay sesiones, conservando el objetivo.
-- SI la aplicación permanece abierta de domingo a lunes sin que la persona realice ninguna
-  de las acciones anteriores, ENTONCES el sistema deberá seguir mostrando el progreso de
-  la semana anterior hasta que se cargue de nuevo, se registre una sesión o se modifique
-  el objetivo; deberá hacerlo igual que la tarjeta "Minutos semana".
+- SI la aplicación permanece abierta y cambia el día o la semana (por ejemplo, de domingo
+  a lunes) sin que la persona realice ninguna de las acciones anteriores, ENTONCES el
+  sistema deberá seguir mostrando el progreso calculado con R, es decir, el de la semana
+  actual del último cálculo, hasta que se cargue de nuevo, se registre una sesión o se
+  modifique el objetivo; deberá hacerlo igual que la tarjeta "Minutos semana".
 - El sistema no deberá usar temporizadores ni detectar por sí mismo el paso de la
   medianoche o del cambio de semana.
-- El sistema no deberá conservar ni mostrar el progreso ni el resultado de cumplimiento de
-  semanas anteriores.
+- El sistema no deberá guardar ni recuperar el progreso ni el resultado de cumplimiento de
+  semanas anteriores: no hay historial, no se puede consultar ninguna semana pasada y, tras
+  recargar o tras un nuevo cálculo, la semana mostrada es siempre la de la nueva R. Esto no
+  contradice el criterio anterior: la última semana calculada permanece en pantalla solo
+  como foto congelada hasta el siguiente cálculo, sin guardarse en ningún sitio.
 - Al fijar o cambiar el objetivo en mitad de la semana, el sistema deberá contar las
-  sesiones desde el lunes de esa misma semana hasta hoy.
+  sesiones desde el lunes de esa misma semana hasta R.
 
 ### RF-10 — Valores válidos y validación de entrada
 
@@ -292,9 +310,10 @@ Criterios de aceptación:
 
 Criterios de aceptación:
 
-- El sistema deberá considerar objetivo guardado válido únicamente al número entero entre
-  1 y 10.080, o al texto formado solo por dígitos (con espacios en los extremos
-  permitidos) que represente un entero entre 1 y 10.080.
+- El sistema deberá considerar objetivo guardado válido tanto al número entero entre 1 y
+  10.080 como al texto formado solo por dígitos (con espacios en los extremos permitidos)
+  que represente un entero entre 1 y 10.080; en ambos casos deberá normalizarlo al mismo
+  entero canónico definido en esta spec y usarlo como objetivo.
 - El sistema deberá rechazar como objetivo guardado los decimales, los signos, los
   exponentes, los separadores de miles o decimales, el contenido vacío, el texto no
   numérico y los valores fuera del rango.
@@ -312,10 +331,10 @@ Criterios de aceptación:
 
 Criterios de aceptación:
 
-- CUANDO se registre una sesión válida con fecha dentro de la semana actual y no futura, el
-  sistema deberá actualizar el progreso, el porcentaje y la barra en la misma pantalla, sin
-  recargar.
-- CUANDO se registre una sesión con fecha anterior a la semana actual o futura, el
+- CUANDO se registre una sesión válida con fecha dentro de la semana actual y no posterior
+  a R, el sistema deberá actualizar el progreso, el porcentaje y la barra en la misma
+  pantalla, sin recargar.
+- CUANDO se registre una sesión con fecha anterior a la semana actual o posterior a R, el
   progreso deberá permanecer igual y no deberá mostrarse ningún error.
 - CUANDO una sesión haga que el progreso alcance o supere el objetivo, el sistema deberá
   mostrar el estado cumplido en la misma actualización.
@@ -394,8 +413,9 @@ Criterios de aceptación:
   El cambio de hora estacional no debe duplicar, perder ni desplazar ningún día de la
   semana ni alterar el progreso. Si cambia la fecha local del dispositivo (por ejemplo, al
   viajar o al cambiarla manualmente), el progreso debe recalcularse con la nueva fecha
-  local en el siguiente momento de cálculo definido en RF-9. Las fechas pueden construirse
-  de otra forma que en la tarjeta siempre que el resultado numérico sea idéntico.
+  local en el siguiente momento de cálculo definido en RF-9, que pasa a ser la nueva R. Las
+  fechas pueden construirse de otra forma que en la tarjeta siempre que el resultado
+  numérico sea idéntico.
 - **RNF-7 — Compatibilidad**: debe funcionar con los datos ya guardados, sin migraciones y
   sin pérdida de sesiones antiguas; la ausencia de objetivo no debe impedir el uso normal.
 - **RNF-8 — Idioma y formato**: textos de interfaz y mensajes en español. El separador de
@@ -409,8 +429,9 @@ Criterios de aceptación:
 - **RNF-10 — Objetivo táctil**: los botones del bloque deben ofrecer un área de toque de al
   menos 44 × 44 px, sin solaparse entre sí ni con el texto.
 - **RNF-11 — Cálculo determinista**: el progreso debe calcularse a partir de las sesiones,
-  del objetivo y de la fecha de hoy recibida como dato de entrada, de forma que se pueda
-  reproducir el mismo resultado para una fecha concreta sin depender del reloj interno.
+  del objetivo y de la fecha de referencia R recibida como dato de entrada, de forma que se
+  pueda reproducir el mismo resultado para una fecha concreta sin depender del reloj
+  interno.
 - **RNF-12 — Verificación del anuncio accesible**: el nombre, el rol y el valor de la barra
   y el anuncio del mensaje de cumplimiento deben poder comprobarse en el árbol de
   accesibilidad del navegador y con al menos un lector de pantalla de referencia.
@@ -432,14 +453,15 @@ Criterios de aceptación:
 - **CL-6 — Progreso mayor que cero pero porcentaje 0**: por ejemplo, 1 de 300 minutos
   muestra "1 de 300 min", "0 %" y barra vacía; no se considera cumplido.
 - **CL-7 — Varias sesiones el mismo día**: sus minutos se suman al progreso.
-- **CL-8 — Sesiones futuras**: se ignoran aunque caigan dentro de la semana actual; no
-  suman ni desbloquean el estado cumplido.
+- **CL-8 — Sesiones futuras**: se ignoran aunque caigan dentro de la semana actual, es
+  decir, con fecha posterior a R; no suman ni desbloquean el estado cumplido.
 - **CL-9 — Sesiones de semanas anteriores**: no cuentan para el progreso actual.
 - **CL-10 — Cambio de semana con la aplicación abierta**: si la aplicación se queda abierta
-  de domingo a lunes, sigue mostrando los datos de la semana anterior hasta que se cargue
-  de nuevo, se registre una sesión o se modifique el objetivo, igual que la tarjeta
-  "Minutos semana"; al cargar de nuevo el lunes, el progreso vuelve a 0 (o a los minutos
-  del nuevo lunes) y el objetivo se conserva.
+  de domingo a lunes sin registrar sesiones ni tocar el objetivo, sigue mostrando el
+  progreso de la semana actual de R (la última calculada) hasta que se cargue de nuevo, se
+  registre una sesión o se modifique el objetivo, igual que la tarjeta "Minutos semana"; no
+  es historial ni un dato guardado. Al cargar de nuevo el lunes, R pasa a ser el lunes, el
+  progreso vuelve a 0 (o a los minutos del nuevo lunes) y el objetivo se conserva.
 - **CL-11 — Hoy es lunes**: la semana en curso solo incluye el lunes; el resto de días se
   verán futuros y no sumarán.
 - **CL-12 — Cambio de hora estacional**: el paso de horario de verano a invierno no debe
@@ -454,7 +476,7 @@ Criterios de aceptación:
 - **CL-16 — Quitar el objetivo estando cumplido**: el bloque vuelve al estado "sin
   objetivo" y desaparecen barra, porcentaje y mensaje de cumplimiento.
 - **CL-17 — Cambiar el objetivo a mitad de semana**: el progreso se recalcula contra el
-  nuevo valor con las sesiones del lunes a hoy; si el nuevo objetivo ya está superado, se
+  nuevo valor con las sesiones del lunes a R; si el nuevo objetivo ya está superado, se
   muestra el estado cumplido de inmediato.
 - **CL-18 — Porcentaje con decimales**: por ejemplo, 1 de 3 minutos se muestra como 33 %,
   sin decimales, y un progreso igual o mayor que el objetivo nunca supera el 100 %.
@@ -468,11 +490,19 @@ Criterios de aceptación:
 - **CL-22 — Texto largo a 320 px**: el progreso se reparte en varias líneas, los botones
   quedan dentro del viewport y no aparece scroll horizontal.
 - **CL-23 — Objetivo con decimales en los datos guardados**: se trata como inválido y se
-  muestra el estado "sin objetivo" hasta que se guarde un valor canónico.
+  muestra el estado "sin objetivo" hasta que se guarde un objetivo válido.
+- **CL-24 — Cambio de día con la aplicación abierta**: si cambia el día local dentro de la
+  misma semana sin cargar, registrar ni tocar el objetivo, el bloque sigue mostrando el
+  progreso calculado con R; las sesiones que pasarían a no ser futuras solo se suman en el
+  siguiente momento de cálculo, igual que la tarjeta "Minutos semana".
+- **CL-25 — Objetivo guardado como texto de dígitos**: un valor guardado como "0300" o
+  " 300 " se acepta como el entero canónico 300 y se usa y se muestra igual que si se
+  hubiera guardado el número 300.
 
 ## Fuera de alcance
 
-- Historial de objetivos, de semanas o de cumplimiento.
+- Historial de objetivos, de semanas o de cumplimiento: no se guardan ni se recuperan
+  resultados de semanas pasadas.
 - Gráficas, estadísticas o comparaciones entre semanas.
 - Objetivos por día, por tema, por sesión o varios objetivos simultáneos.
 - Rachas de cumplimiento, insignias, recompensas o niveles.
@@ -510,4 +540,7 @@ Criterios de aceptación:
 
 ## Dudas abiertas
 
-Ninguna. Todas las decisiones de esta versión están resueltas.
+Ninguna. Todas las decisiones de esta versión están resueltas, incluidas las dos que podían
+leerse de dos formas: la semana mostrada entre cálculos (que no es historial) y la
+normalización de un objetivo guardado como número entero o como texto de solo dígitos (ambos
+al mismo entero canónico).

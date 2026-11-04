@@ -448,3 +448,255 @@ header h1 {
         --hm-cell-gap: 1px;
     }
 }
+
+/* Objetivo semanal (spec 002). Misma tarjeta, paleta y foco que el resto. */
+.goal-section {
+    --goal-text: #2c3e50;
+    --goal-label: #34495e;
+    --goal-muted: #666666;
+    --goal-accent: #4f46e5;
+    --goal-accent-end: #764ba2;
+    --goal-track: #edf0f4;
+    --goal-error: #b3261e;
+    --goal-padding: 25px;
+    background: white;
+    padding: var(--goal-padding);
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.goal-section h2 {
+    font-size: 20px;
+    color: var(--goal-text);
+    font-weight: 600;
+}
+
+.goal-empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.goal-empty-text {
+    flex: 1 1 200px;
+    min-width: 0;
+    font-size: 15px;
+    color: var(--goal-label);
+    overflow-wrap: break-word;
+}
+
+.goal-progress {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+}
+
+.goal-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+    min-width: 0;
+}
+
+.goal-progress-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--goal-text);
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.goal-percent {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--goal-accent);
+}
+
+/* Barra sin transiciones: el relleno se ajusta con el ancho inline (weekly-goal-ui.js). */
+.goal-bar {
+    height: 12px;
+    margin-top: 12px;
+    background-color: var(--goal-track);
+    border: 1px solid rgba(44, 62, 80, 0.18);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.goal-bar-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(135deg, var(--goal-accent) 0%, var(--goal-accent-end) 100%);
+}
+
+/* Mensaje de cumplimiento: siempre en el DOM (role="status").
+   Vacío no ocupa altura, así el lector de pantalla lo anuncia al rellenarse. */
+.goal-done {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--goal-accent);
+}
+
+.goal-done:not(:empty) {
+    margin-top: 12px;
+}
+
+.goal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.goal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.goal-btn-primary {
+    background: linear-gradient(135deg, var(--goal-accent) 0%, var(--goal-accent-end) 100%);
+    color: #ffffff;
+}
+
+.goal-btn-secondary {
+    background-color: #ffffff;
+    border-color: var(--goal-accent);
+    color: var(--goal-accent);
+}
+
+@media (hover: hover) {
+    .goal-btn-primary:hover {
+        filter: brightness(1.08);
+    }
+
+    .goal-btn-secondary:hover {
+        background-color: var(--goal-track);
+    }
+}
+
+.goal-btn:active {
+    transform: translateY(1px);
+}
+
+.goal-form {
+    margin-top: 12px;
+}
+
+.goal-form-group {
+    margin-bottom: 4px;
+}
+
+.goal-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--goal-label);
+}
+
+.goal-hint {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--goal-muted);
+}
+
+.goal-form-group input {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 2px solid var(--goal-muted);
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--goal-text);
+    font-family: inherit;
+    font-size: 16px; /* Evita el zoom automático de iOS al enfocar (RF-14). */
+}
+
+.goal-error,
+.goal-save-error {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--goal-error);
+}
+
+.goal-error {
+    margin-top: 10px;
+}
+
+.goal-save-error {
+    margin-top: 12px;
+}
+
+/* Foco con :focus (no :focus-visible) porque el foco también llega de forma
+   programática al abrir el editor y al devolverlo al botón o a la sección. */
+.goal-section:focus,
+.goal-btn:focus,
+.goal-form-group input:focus {
+    outline: 2px solid var(--goal-text);
+    outline-offset: 2px;
+}
+
+.goal-form-group input:focus {
+    border-color: var(--goal-accent);
+}
+
+/* Campo inválido: solo el borde, porque el mensaje ya explica el error (RF-10). */
+.goal-form-group input[aria-invalid="true"] {
+    border-color: var(--goal-error);
+}
+
+@media (max-width: 600px) {
+    .goal-section {
+        --goal-padding: 18px;
+        margin-bottom: 24px;
+    }
+
+    .goal-progress-text,
+    .goal-percent {
+        font-size: 19px;
+    }
+
+    .goal-empty .goal-btn {
+        flex: 1 1 100%;
+    }
+
+    .goal-actions .goal-btn {
+        flex: 1 1 140px;
+    }
+}
+
+@media (max-width: 360px) {
+    .goal-section {
+        --goal-padding: 14px;
+    }
+
+    .goal-progress-text,
+    .goal-percent {
+        font-size: 18px;
+    }
+
+    .goal-summary {
+        gap: 2px 8px;
+    }
+}
+
+/* El atributo hidden manda sobre los display de los estados. */
+.goal-section [hidden] {
+    display: none;
+}

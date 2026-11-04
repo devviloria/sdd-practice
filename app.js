@@ -1,6 +1,7 @@
 // Diario de Estudio - Aplicación para registrar sesiones de estudio
 
 const STORAGE_KEY = 'diarioEstudio_sessions';
+const GOAL_STORAGE_KEY = 'diarioEstudio_weeklyGoal';
 
 function getTodayLocalDateString() {
     const now = new Date();
@@ -24,6 +25,55 @@ function getSessions() {
 
 function saveSessions(sessions) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+}
+
+// --- Objetivo semanal (clave independiente de las sesiones) ---
+
+// Devuelve el valor crudo guardado del objetivo, o null si no hay o no se puede leer.
+function getGoalRawValue() {
+    try {
+        return localStorage.getItem(GOAL_STORAGE_KEY);
+    } catch (e) {
+        return null;
+    }
+}
+
+// Guarda el objetivo y comprueba que el navegador lo conserva.
+// Si la comprobación falla, restaura el valor anterior y devuelve false.
+function saveGoalMinutes(minutes) {
+    const previousValue = getGoalRawValue();
+    const newValue = String(minutes);
+
+    try {
+        localStorage.setItem(GOAL_STORAGE_KEY, newValue);
+        if (localStorage.getItem(GOAL_STORAGE_KEY) === newValue) {
+            return true;
+        }
+    } catch (e) {
+        // Se trata como un guardado rechazado y se restaura lo anterior.
+    }
+
+    try {
+        if (previousValue === null) {
+            localStorage.removeItem(GOAL_STORAGE_KEY);
+        } else {
+            localStorage.setItem(GOAL_STORAGE_KEY, previousValue);
+        }
+    } catch (e) {
+        // Si tampoco se puede restaurar, se deja el almacenamiento como esté.
+    }
+
+    return false;
+}
+
+// Quita el objetivo y comprueba que ya no está guardado.
+function clearGoalValue() {
+    try {
+        localStorage.removeItem(GOAL_STORAGE_KEY);
+        return localStorage.getItem(GOAL_STORAGE_KEY) === null;
+    } catch (e) {
+        return false;
+    }
 }
 
 function parseLocalDate(dateString) {
@@ -355,6 +405,9 @@ function initForm() {
             // Actualizar vista
             renderStreak();
             renderWeekMinutes();
+            if (typeof renderWeeklyGoal === 'function') {
+                renderWeeklyGoal();
+            }
             renderSessions();
             if (typeof renderHeatmap === 'function') {
                 renderHeatmap();
@@ -367,6 +420,9 @@ function init() {
     initForm();
     renderStreak();
     renderWeekMinutes();
+    if (typeof renderWeeklyGoal === 'function') {
+        renderWeeklyGoal();
+    }
     renderSessions();
     if (typeof renderHeatmap === 'function') {
         renderHeatmap();

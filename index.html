@@ -35,6 +35,48 @@
             </div>
         </section>
 
+        <section class="goal-section" id="weeklyGoalSection" aria-labelledby="weeklyGoalTitle" tabindex="-1">
+            <h2 id="weeklyGoalTitle">Objetivo semanal</h2>
+
+            <div class="goal-empty" id="goalEmpty">
+                <p class="goal-empty-text">Aún no has fijado un objetivo semanal</p>
+                <button type="button" class="goal-btn goal-btn-primary" id="goalSetBtn">Fijar objetivo</button>
+            </div>
+
+            <!-- El progreso, el porcentaje y la barra se rellenan desde weekly-goal-ui.js -->
+            <div class="goal-progress" id="goalProgress" hidden>
+                <div class="goal-summary">
+                    <span class="goal-progress-text" id="goalProgressText">0 de 0 min</span>
+                    <span class="goal-percent" id="goalPercent">0 %</span>
+                </div>
+                <div class="goal-bar" id="goalBar" role="progressbar" aria-labelledby="weeklyGoalTitle"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="">
+                    <div class="goal-bar-fill" id="goalBarFill" aria-hidden="true"></div>
+                </div>
+                <p class="goal-done" id="goalDone" role="status"></p>
+                <div class="goal-actions">
+                    <button type="button" class="goal-btn goal-btn-primary" id="goalEditBtn">Editar</button>
+                    <button type="button" class="goal-btn goal-btn-secondary" id="goalRemoveBtn">Quitar</button>
+                </div>
+            </div>
+
+            <form class="goal-form" id="goalForm" novalidate hidden>
+                <div class="goal-form-group">
+                    <label for="goalMinutes">Minutos por semana</label>
+                    <p class="goal-hint" id="goalMinutesHint">Entre 1 y 10.080 minutos</p>
+                    <input type="text" id="goalMinutes" name="goalMinutes" inputmode="numeric"
+                        autocomplete="off" aria-describedby="goalMinutesHint goalError">
+                </div>
+                <p class="goal-error" id="goalError" role="alert" hidden></p>
+                <div class="goal-actions">
+                    <button type="submit" class="goal-btn goal-btn-primary" id="goalSaveBtn">Guardar</button>
+                    <button type="button" class="goal-btn goal-btn-secondary" id="goalCancelBtn">Cancelar</button>
+                </div>
+            </form>
+
+            <p class="goal-save-error" id="goalSaveError" role="alert" hidden></p>
+        </section>
+
         <section class="heatmap-section" aria-labelledby="heatmapTitle">
             <div class="heatmap-header">
                 <h2 id="heatmapTitle">Actividad de las últimas 12 semanas</h2>
@@ -96,6 +138,8 @@
 
     <script src="heatmap-logic.js"></script>
     <script src="heatmap-ui.js"></script>
+    <script src="weekly-goal-logic.js"></script>
+    <script src="weekly-goal-ui.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
