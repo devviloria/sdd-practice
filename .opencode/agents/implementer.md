@@ -26,7 +26,7 @@ móvil).
 - Marca la tarea como hecha en tasks.md y PARA. No empieces la siguiente.
 - Si la tarea o el plan son incorrectos o imposibles, PARA y explícalo. No improvises una
 solución distinta.
-[- Al terminar cada tarea, actualiza MEMORY.md con su estado, decisiones, resultado de
+- Al terminar cada tarea, actualiza MEMORY.md con su estado, decisiones, resultado de
   tests y aprendizajes. Si la tarea se bloquea, registra también el motivo y no la marques
   como completada.
 
