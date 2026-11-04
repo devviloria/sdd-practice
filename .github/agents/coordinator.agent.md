@@ -60,3 +60,5 @@ de la fase anterior.
 - Versión, fecha de entrega y estado de QA son control manual del desarrollador supervisor:
    nunca los inventes ni los cambies. Si la última entrega no está clara, pregunta antes de
    editar el changelog.
+- Para cambios de interfaz, espera las capturas de escritorio y móvil adjuntas al veredicto
+   aprobado del reviewer y enlázalas en esa misma entrada. No crees ni sustituyas capturas.

@@ -9,6 +9,7 @@ Registro de entregas del Diario de Estudio. Las fechas usan el formato `AAAA-MM-
 
 ### Added
 - Ranking semanal de los temas más estudiados, con medallas de oro, plata y bronce.
+- Evidencia visual: [Escritorio](screenshots/v1/003-temas-mas-estudiados/desktop.png) · [Móvil](screenshots/v1/003-temas-mas-estudiados/mobile-375.png).
 
 ### Changed
 - Sin cambios en esta entrega.

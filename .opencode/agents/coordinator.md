@@ -88,3 +88,5 @@ Los subagentes NO ven esta conversación. En cada llamada pásales todo lo que n
 - La versión, fecha de entrega y estado de QA los define manualmente el desarrollador
   supervisor. No crees ni modifiques esos metadatos. Si no está clara la última entrega,
   pregunta antes de editar CHANGELOG.md.
+- Para cambios de interfaz, espera las capturas de escritorio y móvil adjuntas al veredicto
+  aprobado del reviewer y enlázalas en esa misma entrada. No crees ni sustituyas capturas.

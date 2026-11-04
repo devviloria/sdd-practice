@@ -57,6 +57,18 @@ que corresponda dentro de la última entrega ya definida en `CHANGELOG.md`.
 supervisor. No los inventes ni los cambies. Si no está claro cuál es la entrega vigente,
 pregunta al supervisor antes de editar el changelog.
 
+## Evidencia visual
+- Si la spec incluye cambios de interfaz, el reviewer captura la versión aprobada en Chrome
+	DevTools por `file://`: escritorio y móvil a 375 px.
+- Guarda las capturas como `screenshots/<version>/<spec>/desktop.png` y
+	`screenshots/<version>/<spec>/mobile-375.png`. Usa la versión vigente de CHANGELOG.md; si
+	no se puede determinar, pregunta al supervisor.
+- Usa datos sintéticos. Antes de probar, respalda todo el `localStorage`; al terminar,
+	restáuralo y comprueba que quedó idéntico. No guardes datos reales de sesiones en capturas.
+- El reviewer solo puede crear estas imágenes dentro de `screenshots/`; no modifica código,
+	specs, tareas ni changelog. Tras `VEREDICTO: APROBADO`, el coordinator enlaza las capturas
+	en la entrada correspondiente de CHANGELOG.md. No cambia versión, fecha ni estado de QA.
+
 ## Comandos
 - Tests: `node --test`
 

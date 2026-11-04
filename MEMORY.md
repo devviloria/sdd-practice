@@ -6,6 +6,9 @@ Memoria del proyecto entre sesiones. Mantenerla breve (máximo ~50 líneas).
 - `CHANGELOG.md`: coordinator añade cada funcionalidad una vez, tras veredicto aprobado, a
   la última entrega; versión, fecha y estado QA son control manual del supervisor. v1 sigue
   pendiente de despliegue en QA.
+- Reviewer guarda evidencia de UI bajo `screenshots/<version>/<spec>/` con datos sintéticos;
+  coordinator enlaza las capturas tras aprobación. Spec 003 v1: desktop 1280 px y móvil
+  375 px verificados; `localStorage` restaurado idéntico.
 - Spec 003: RF-4 se acotó a carga/registro; spec, plan y tareas aprobados. T1-T8 completas;
   reviewer aprobó la validación final con ambas suites en 92/92.
 - T1-T4: lógica pura `WeeklyTopicsLogic` filtra fechas locales, agrupa y ordena temas, asigna puestos densos/medallas y cubre casos límite. `node --test` y `TZ=Europe/Madrid node --test`: 92/92.
