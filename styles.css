@@ -700,3 +700,104 @@ header h1 {
 .goal-section [hidden] {
     display: none;
 }
+
+.weekly-topics-section {
+    --topics-padding: 25px;
+    --topics-text: #2c3e50;
+    --topics-muted: #667085;
+    background: #ffffff;
+    padding: var(--topics-padding);
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.weekly-topics-section h2 {
+    font-size: 20px;
+    color: var(--topics-text);
+    font-weight: 600;
+}
+
+#weeklyTopicsEmpty {
+    margin-top: 12px;
+    color: var(--topics-muted);
+    font-size: 15px;
+}
+
+#weeklyTopicsList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+    list-style: none;
+}
+
+#weeklyTopicsList li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 11px 12px;
+    border-left: 4px solid #d6dde6;
+    border-radius: 6px;
+    background: #f7f8fa;
+}
+
+.weekly-topic-name {
+    min-width: 0;
+    color: var(--topics-text);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.weekly-topic-minutes {
+    color: var(--topics-muted);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.weekly-topic-medal {
+    padding: 3px 8px;
+    border: 1px solid #c9d1db;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #344054;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+#weeklyTopicsList[hidden],
+.weekly-topics-section [hidden] {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .weekly-topics-section {
+        --topics-padding: 18px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 360px) {
+    .weekly-topics-section {
+        --topics-padding: 14px;
+    }
+
+    #weeklyTopicsList li {
+        gap: 6px;
+        padding: 10px 8px;
+    }
+
+    .weekly-topic-minutes {
+        font-size: 13px;
+    }
+
+    .weekly-topic-medal {
+        padding-right: 6px;
+        padding-left: 6px;
+        font-size: 12px;
+    }
+}

@@ -408,6 +408,9 @@ function initForm() {
             if (typeof renderWeeklyGoal === 'function') {
                 renderWeeklyGoal();
             }
+            if (typeof WeeklyTopicsUI !== 'undefined') {
+                WeeklyTopicsUI.renderWeeklyTopics();
+            }
             renderSessions();
             if (typeof renderHeatmap === 'function') {
                 renderHeatmap();
@@ -422,6 +425,9 @@ function init() {
     renderWeekMinutes();
     if (typeof renderWeeklyGoal === 'function') {
         renderWeeklyGoal();
+    }
+    if (typeof WeeklyTopicsUI !== 'undefined') {
+        WeeklyTopicsUI.renderWeeklyTopics();
     }
     renderSessions();
     if (typeof renderHeatmap === 'function') {

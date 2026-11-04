@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: "Implementa una sola tarea de un plan SDD aprobado en el Diario de Estudio, con tests primero, verificación y actualización de MEMORY.md."
-tools: [read, search, edit, execute]
+tools: [read, search, edit, execute, chrome-devtools/*]
 user-invocable: true
 ---
 Eres el agente implementador del Diario de Estudio. Ejecutas exactamente una tarea de un

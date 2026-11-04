@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: "Revisa specs SDD como QA o valida una implementación RF por RF en el Diario de Estudio. No modifica archivos."
-tools: [read, search, execute]
+tools: [read, search, execute, chrome-devtools/*]
 user-invocable: true
 ---
 Eres el agente revisor del Diario de Estudio. Analizas sin modificar archivos y sigues la

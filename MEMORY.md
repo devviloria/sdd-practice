@@ -1,50 +1,36 @@
 # MEMORY.md — Diario de Estudio
-Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo que ya no
-aporte.
+Memoria del proyecto entre sesiones. Mantenerla breve (máximo ~50 líneas).
 ## Estado actual
-- v1 + minutos de la semana + mapa de calor (spec 001) + objetivo semanal (spec 002
-  implementada y verificada; falta el veredicto del reviewer).
-- Sesiones, racha, mejor racha, minutos de la semana, objetivo semanal (fijar, editar,
-  quitar, progreso, %, barra y "¡Objetivo cumplido!"), mapa de 12 semanas y lista.
-- localStorage: `diarioEstudio_sessions` (formato sin cambios) y
-  `diarioEstudio_weeklyGoal` (texto de dígitos).
-- T-01 a T-10 marcadas en `specs/002-objetivo-semanal/tasks.md`. `node --test` 75/75 en
-  verde (también con `TZ=Europe/Madrid`). Verificado en Chrome por `file://` a escritorio,
-  375 y 320 px; consola limpia y sesiones idénticas antes/después.
-- MCP `chrome-devtools` en `opencode.json` (V2: `mcp.servers`, `type: "local"`).
+- v1: sesiones, rachas, minutos semanales, mapa de 12 semanas y objetivo semanal (spec 002 implementada; pendiente veredicto reviewer).
+- Storage: `diarioEstudio_sessions` conserva su formato; `diarioEstudio_weeklyGoal` guarda texto de dígitos.
+- Spec 003: RF-4 se acotó a carga/registro; spec, plan y tareas aprobados. T1-T8 completas;
+  reviewer aprobó la validación final con ambas suites en 92/92.
+- T1-T4: lógica pura `WeeklyTopicsLogic` filtra fechas locales, agrupa y ordena temas, asigna puestos densos/medallas y cubre casos límite. `node --test` y `TZ=Europe/Madrid node --test`: 92/92.
+- T5: `index.html` tiene el bloque semántico vacío entre objetivo y mapa; verificado en Chrome por `file://`.
+- T6: `weekly-topics-ui.js` expone `WeeklyTopicsUI.renderWeeklyTopics()`, renderiza estado vacío y filas DOM accesibles con `textContent`; scripts de temas cargan antes de `app.js`. `node --test`: 92/92.
+- T6 verificado en Chrome por `file://`: vacío exacto; ranking con Oro/Plata/Bronce; `<img src=x onerror=alert(1)>` se muestra como texto, sin `img` ni alerta; consola limpia. `localStorage` completo restaurado idéntico tras la prueba.
+- T7: `styles.css` estiliza la tarjeta, filas en grid adaptable y etiquetas de medalla con texto visible; en 320/375 px no hay desbordes ni solapamientos, en escritorio conserva la tarjeta. Estado vacío verificado con lista oculta; se ajustó especificidad de `[hidden]`. Chrome sin errores y `node --test`: 92/92; almacenamiento original restaurado exactamente.
+- T8: `app.js` invoca `WeeklyTopicsUI.renderWeeklyTopics()` al iniciar y tras guardar sesión; la UI toma `getTodayLocalDateString()` y lee las sesiones una vez por render. Chrome `file://`: carga real, vacío, agrupación/empates/puestos densos y guardado actualizan ranking y métricas; 320/375/escritorio sin overflow, orden correcto y consola limpia. Fixtures y sesión de prueba restaurados con igualdad exacta de todas las claves; quedan las 4 sesiones originales. `node --test` y `TZ=Europe/Madrid node --test`: 92/92; cambios horarios primavera/otoño comprobados.
+- MCP `chrome-devtools` configurado en `opencode.json` (`mcp.servers`, `type: "local"`).
+
 ## Decisiones (y por qué)
-- Sin backend ni dependencias: doble clic sobre `index.html`.
-- Fecha editable en el formulario: permite registrar días pasados.
-- Mantenidas clave y campos de sesiones (id, timestamp) por compatibilidad.
-- Minutos de la semana: lunes-domingo local; suma del lunes a hoy.
-- Mejor racha: máximo histórico de días consecutivos; ignora fechas futuras.
-- Mapa de calor: lógica pura en `HeatmapLogic`; fechas al mediodía local.
-- Objetivo en clave propia como texto de dígitos ("300"): `getItem` devuelve texto y el
-  valor guardado coincide con el leído; independiente de las sesiones.
-- Lógica pura en `WeeklyGoalLogic` con `today` como parámetro, sin reloj, DOM ni
-  localStorage: se prueba con `node --test` y es determinista.
-- Se recalcula solo al cargar, al registrar sesión y al fijar/cambiar/quitar; sin
-  temporizadores: entre cálculos el bloque mantiene la foto de R, como la tarjeta.
-- Tres estados (sin objetivo / en progreso / cumplido) y el editor en el mismo bloque; al
-  guardar o quitar se repinta también la tarjeta "Minutos semana" para que no diverjan.
-- Formato de miles con punto solo en el texto del bloque; la tarjeta sigue sin formato.
+- Sin backend, dependencias ni build: la app funciona abriendo `index.html`.
+- Mantener clave y esquema de sesiones por compatibilidad; fecha editable admite registrar días pasados.
+- Fechas locales por componentes: no usar `toISOString()` ni `new Date("AAAA-MM-DD")`; lunes inicia la semana.
+- Mejor racha es histórica y excluye fechas futuras; mapa usa `HeatmapLogic` puro.
+- Lógica semanal separada de DOM/storage y determinista con `today` explícito.
+- Objetivo independiente en clave propia; solo se recalcula al cargar o tras acciones de objetivo/sesión, sin temporizadores.
+- Temas: filtrar antes de agrupar para que el nombre visible venga de la primera sesión clasificable; renderizar mediante nodos y `textContent`.
+
 ## Aprendizajes y errores a evitar
-- Divergencia con `calculateWeekMinutes`: si cambia su tabla, actualizar
-  `calculateWeekProgress` en el mismo commit.
-- `hidden` lo pisaba el `display` de los estados; hace falta
-  `.goal-section [hidden] { display: none; }` al final del CSS.
-- `minutes: Infinity` pasa el filtro `> 0`: la tarjeta lo suma y el bloque lo ignora. La
-  lógica exige `Number.isFinite`; conviene alinear la tarjeta.
-- Evitar lecturas dobles de `getSessions()` en un mismo repintado: leer una vez y derivar.
-- Ventana de medianoche: tarjeta y bloque toman la fecha en dos llamadas seguidas; si la
-  medianoche cae entre ambas, pueden diferir hasta el siguiente cálculo.
-- No usar `toISOString()` ni `new Date("AAAA-MM-DD")`; fechas locales por componentes.
-- Lunes: `(getDay() + 6) % 7`.
-- Foco programático: los controles del objetivo usan `:focus`, no `:focus-visible`.
-- Frontmatter de agentes: el `---` de cierre debe empezar en la columna 0.
+- Si cambia la regla de `calculateWeekMinutes`, alinear `calculateWeekProgress`.
+- `.goal-section [hidden] { display: none; }` evita que los estilos de estado oculten `hidden`.
+- `minutes: Infinity` requiere `Number.isFinite`; la tarjeta existente aún puede sumar ese valor.
+- Evitar lecturas repetidas de `getSessions()`; la medianoche entre lecturas puede producir fechas distintas.
+- Para semanas/rachas, mover fechas con `setDate`, no con milisegundos; no usar `timestamp` para cambiar el día guardado.
+- El ranking usa fecha local por componentes y no aritmética de 24 h; `calculateBestStreak` conserva una división heredada por milisegundos que puede ser sensible al cambio horario, fuera del alcance de T8.
+- `calculateStreak` puede fallar si hay fechas futuras en el Set; bug pendiente.
+
 ## Próximos pasos
-- Revisión final de la spec 002: el reviewer da el veredicto.
-- Bug conocido: `calculateStreak` añade fechas futuras al Set y puede devolver 0 aunque hoy
-  haya sesión. Pendiente.
-- Mejora propuesta: que `calculateWeekMinutes` delegue en `calculateWeekProgress` para
-  eliminar la regla duplicada.
+- Spec 003 cerrada. Pendiente el veredicto final del reviewer para spec 002.
+- Revisión final pendiente de spec 002; mejora propuesta: delegar `calculateWeekMinutes` en `calculateWeekProgress`.

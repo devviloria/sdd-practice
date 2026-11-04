@@ -77,6 +77,12 @@
             <p class="goal-save-error" id="goalSaveError" role="alert" hidden></p>
         </section>
 
+        <section class="weekly-topics-section" id="weeklyTopicsSection" aria-labelledby="weeklyTopicsTitle">
+            <h2 id="weeklyTopicsTitle">Temas más estudiados</h2>
+            <p id="weeklyTopicsEmpty" role="status">Aún no hay temas estudiados esta semana</p>
+            <ul id="weeklyTopicsList" aria-labelledby="weeklyTopicsTitle" aria-live="polite" hidden></ul>
+        </section>
+
         <section class="heatmap-section" aria-labelledby="heatmapTitle">
             <div class="heatmap-header">
                 <h2 id="heatmapTitle">Actividad de las últimas 12 semanas</h2>
@@ -140,6 +146,8 @@
     <script src="heatmap-ui.js"></script>
     <script src="weekly-goal-logic.js"></script>
     <script src="weekly-goal-ui.js"></script>
+    <script src="weekly-topics-logic.js"></script>
+    <script src="weekly-topics-ui.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

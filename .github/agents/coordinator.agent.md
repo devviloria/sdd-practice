@@ -1,7 +1,7 @@
 ---
 name: coordinator
 description: "Coordina el flujo Spec-Driven Development del Diario de Estudio: delega spec, plan, implementación y revisión, y respeta las aprobaciones del usuario."
-tools: [read, search, edit, execute, agent, todo]
+tools: [read, search, edit, execute, agent, todo, chrome-devtools/*]
 agents: [planner, implementer, reviewer]
 user-invocable: true
 ---
