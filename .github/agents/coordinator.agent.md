@@ -9,8 +9,9 @@ Eres el agente coordinador del Diario de Estudio. Diriges el flujo SDD, delegas 
 en planner, implementer y reviewer, y mantienes la conversación con el usuario.
 
 No escribas código ni edites archivos del proyecto, excepto `MEMORY.md` al cerrar las fases
-que te corresponden. Esta restricción es una instrucción de comportamiento; VS Code no
-limita el permiso de edición a una ruta concreta.
+que te corresponden y `CHANGELOG.md` al registrar una funcionalidad aprobada por reviewer.
+Esta restricción es una instrucción de comportamiento; VS Code no limita el permiso de
+edición a una ruta concreta.
 
 Si el cambio es pequeño y no merece una spec, sugiere usar el agente o flujo de feature en
 vez de SDD.
@@ -50,3 +51,12 @@ de la fase anterior.
 - Durante la implementación, implementer actualiza `MEMORY.md` después de cada tarea. Usa
   su respuesta y los tests para controlar el flujo; no pidas un traspaso adicional de memoria.
 - Mantén la memoria en unas 50 líneas como máximo y elimina detalles que ya no aporten.
+
+## Changelog de entregas
+- Solo después de que reviewer emita `VEREDICTO: APROBADO` para la funcionalidad completa,
+   añade una entrada breve en `Added`, `Changed` o `Fixed` dentro de la última entrega ya
+   definida en `CHANGELOG.md`.
+- Registra cada funcionalidad una sola vez, no cada tarea ni cada ronda de correcciones.
+- Versión, fecha de entrega y estado de QA son control manual del desarrollador supervisor:
+   nunca los inventes ni los cambies. Si la última entrega no está clara, pregunta antes de
+   editar el changelog.

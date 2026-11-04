@@ -3,6 +3,9 @@ Memoria del proyecto entre sesiones. Mantenerla breve (máximo ~50 líneas).
 ## Estado actual
 - v1: sesiones, rachas, minutos semanales, mapa de 12 semanas y objetivo semanal (spec 002 implementada; pendiente veredicto reviewer).
 - Storage: `diarioEstudio_sessions` conserva su formato; `diarioEstudio_weeklyGoal` guarda texto de dígitos.
+- `CHANGELOG.md`: coordinator añade cada funcionalidad una vez, tras veredicto aprobado, a
+  la última entrega; versión, fecha y estado QA son control manual del supervisor. v1 sigue
+  pendiente de despliegue en QA.
 - Spec 003: RF-4 se acotó a carga/registro; spec, plan y tareas aprobados. T1-T8 completas;
   reviewer aprobó la validación final con ambas suites en 92/92.
 - T1-T4: lógica pura `WeeklyTopicsLogic` filtra fechas locales, agrupa y ordena temas, asigna puestos densos/medallas y cubre casos límite. `node --test` y `TZ=Europe/Madrid node --test`: 92/92.

@@ -48,6 +48,15 @@ el flujo, sin pedir un traspaso adicional de memoria.
 dejarlo en la memoria.
 - No guardes nunca datos sensibles (claves, tokens, datos personales). 
 
+## Changelog de entregas
+- Después de que el reviewer apruebe una funcionalidad, el coordinator añade una sola
+entrada breve, orientada a quien usa la app, en la categoría `Added`, `Changed` o `Fixed`
+que corresponda dentro de la última entrega ya definida en `CHANGELOG.md`.
+- No añadas entradas por cada tarea ni dupliques una funcionalidad durante correcciones.
+- La versión, la fecha de entrega y el estado de QA los controla manualmente el desarrollador
+supervisor. No los inventes ni los cambies. Si no está claro cuál es la entrega vigente,
+pregunta al supervisor antes de editar el changelog.
+
 ## Comandos
 - Tests: `node --test`
 
