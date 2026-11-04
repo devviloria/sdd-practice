@@ -37,8 +37,12 @@ pero ayer sí, la racha sigue viva y se cuenta desde ayer.
 ## Memoria
 - Al empezar, lee `MEMORY.md` para conocer el estado del proyecto y las decisiones
 tomadas.
-- Al terminar una tarea, actualízalo: estado actual, decisiones importantes (con su
-porqué) y errores a evitar.
+- Al terminar una fase o cada tarea de implementación, actualiza
+MEMORY.md con el estado, las decisiones importantes y su porqué, los resultados y los
+errores a evitar. En SDD, el coordinator actualiza la memoria al cerrar spec,
+clarificación, plan y validación; el implementer la actualiza después de cada tarea de
+implementación. El coordinator usa la respuesta normal de tarea y los tests para controlar
+el flujo, sin pedir un traspaso adicional de memoria.
 - Mantenlo breve (máximo ~50 líneas): resume o elimina lo que ya no aporte.
 - Si algo se convierte en una regla permanente, propón moverlo a `AGENTS.md` en lugar de
 dejarlo en la memoria.
@@ -52,7 +56,8 @@ dejarlo en la memoria.
 
 ## Límites
 - ✅ Siempre: respetar las reglas de fechas y racha, mantener los textos en español.
-- ✅ Siempre: actualizar `MEMORY.md` al terminar cada tarea.
+- ✅ Siempre: actualizar `MEMORY.md` al cerrar cada fase y después de cada tarea de
+	implementación, según las responsabilidades anteriores.
 - ⚠️ Pregunta antes: crear archivos nuevos, cambiar el formato de los datos guardados.
 - 🚫 Nunca: añadir dependencias, frameworks o un paso de build.
 

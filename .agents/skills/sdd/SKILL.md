@@ -1,8 +1,9 @@
 ---
 name: sdd
-description: Úsala siempre que trabajes con Spec-Driven Development en este proyecto
-(docs/constitution.md o cualquier archivo dentro de specs/) - redactar, revisar o cambiar
-specs, planes y tareas, o implementar y validar tareas de una spec.
+description: >-
+  Úsala siempre que trabajes con Spec-Driven Development en este proyecto
+  (docs/constitution.md o cualquier archivo dentro de specs/) - redactar, revisar o cambiar
+  specs, planes y tareas, o implementar y validar tareas de una spec.
 ---
 
 # Spec-Driven Development (SDD)
@@ -16,7 +17,10 @@ para y pregunta.
 por último en el código.
 - Cada spec vive en su carpeta: `specs/NNN-nombre/` con `spec.md`, `plan.md` y
 `tasks.md`.
-- Al terminar cada fase, actualiza `MEMORY.md`.
+- Al terminar cada fase, se actualiza `MEMORY.md`: el coordinator lo hace para spec,
+  clarificación, plan y validación; el implementer lo hace después de cada tarea de
+  implementación. El coordinator usa la respuesta normal del implementer y los resultados
+  de tests para controlar el flujo, sin pedir un traspaso adicional de memoria.
 
 ## Plantilla de spec (spec.md)
 ```
