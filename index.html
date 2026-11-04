@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario de Estudio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Diario de Estudio</h1>
+        </header>
+
+        <section class="streak-section">
+            <div class="streak-cards">
+                <div class="streak-card">
+                    <div class="streak-label">Racha actual</div>
+                    <div class="streak-value">
+                        <span id="streakCount">0</span> <span class="fire">🔥</span>
+                    </div>
+                </div>
+                <div class="streak-card">
+                    <div class="streak-label">Mejor racha</div>
+                    <div class="streak-value">
+                        <span id="bestStreakCount">0</span> <span class="fire">🔥</span>
+                    </div>
+                </div>
+                <div class="streak-card minutes-card">
+                    <div class="streak-label">Minutos semana</div>
+                    <div class="streak-value">
+                        <span id="weekMinutes">0</span> <span class="minutes-unit">min</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="heatmap-section" aria-labelledby="heatmapTitle">
+            <div class="heatmap-header">
+                <h2 id="heatmapTitle">Actividad de las últimas 12 semanas</h2>
+                <p class="heatmap-range" id="heatmapRange"></p>
+            </div>
+            <div class="heatmap-body">
+                <div class="heatmap-weekdays" aria-hidden="true">
+                    <span>lun</span>
+                    <span></span>
+                    <span>mié</span>
+                    <span></span>
+                    <span>vie</span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="heatmap-grid" id="heatmapGrid" role="group" aria-labelledby="heatmapTitle"></div>
+            </div>
+            <p class="heatmap-empty" id="heatmapEmpty" role="status" hidden></p>
+            <div class="heatmap-legend" role="group" aria-label="Intensidad de estudio, de menos a más">
+                <span>Menos</span>
+                <span class="heatmap-legend-swatch level-1" aria-hidden="true"></span>
+                <span class="heatmap-legend-swatch level-2" aria-hidden="true"></span>
+                <span class="heatmap-legend-swatch level-3" aria-hidden="true"></span>
+                <span class="heatmap-legend-swatch level-4" aria-hidden="true"></span>
+                <span>Más</span>
+            </div>
+            <div class="heatmap-tooltip" id="heatmapTooltip" role="tooltip" hidden></div>
+        </section>
+
+        <section class="form-section">
+            <h2>Registrar sesión</h2>
+            <form id="sessionForm" novalidate>
+                <div class="form-group">
+                    <label for="sessionDate">Fecha</label>
+                    <input type="date" id="sessionDate" name="sessionDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sessionTopic">Tema</label>
+                    <input type="text" id="sessionTopic" name="sessionTopic" placeholder="Ej: JavaScript, Matemáticas..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sessionMinutes">Minutos</label>
+                    <input type="number" id="sessionMinutes" name="sessionMinutes" min="1" placeholder="Ej: 30" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Registrar sesión</button>
+            </form>
+        </section>
+
+        <section class="sessions-section">
+            <h2>Sesiones</h2>
+            <div id="sessionsList" class="sessions-list">
+                <!-- Las sesiones se mostrarán aquí -->
+            </div>
+        </section>
+    </div>
+
+    <script src="heatmap-logic.js"></script>
+    <script src="heatmap-ui.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
